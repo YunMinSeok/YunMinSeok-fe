@@ -1,19 +1,28 @@
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 
 import { Product } from '../types/product';
-import ProductItem from './ProductItem';
+import ProductLoadingItem from './ProductLoadingItem';
+import { Suspense } from 'react';
+const ProductItem = dynamic(() => import('./ProductItem'), {
+  suspense: true,
+});
 
 type ProductListProps = {
   products: Product[];
 };
 
-const ProductList = ({ products }: ProductListProps) => (
-  <Container>
-    {products.map((product) => (
-      <ProductItem key={product.id} product={product} />
-    ))}
-  </Container>
-);
+const ProductList = ({ products }: ProductListProps) => {
+  return (
+    <Container>
+      {products.map((product) => (
+        <Suspense key={product.id} fallback={<ProductLoadingItem />}>
+          <ProductItem product={product} />
+        </Suspense>
+      ))}
+    </Container>
+  );
+};
 
 export default ProductList;
 
