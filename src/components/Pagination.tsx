@@ -14,8 +14,6 @@ function initializePages(page: number, end_page: number) {
   let pages = [];
 
   let _page = page - Math.floor(showPageCount / 2);
-  console.log(page);
-  console.log(_page);
   while (showPageCount > pages.length) {
     if (_page > end_page) {
       break;
