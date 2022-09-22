@@ -9,14 +9,6 @@ const LoginPage: NextPage = () => {
   const [pwdValue, setPwdValue] = useState<string>('');
   return (
     <>
-      <Header>
-        <Link href='/'>
-          <Title>HAUS</Title>
-        </Link>
-        <Link href='/login'>
-          <p>login</p>
-        </Link>
-      </Header>
       <Form>
         <div>아이디</div>
         <TextInput type='text' />
@@ -29,17 +21,6 @@ const LoginPage: NextPage = () => {
 };
 
 export default LoginPage;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-`;
-
-const Title = styled.a`
-  font-size: 48px;
-`;
 
 const Form = styled.div`
   display: flex;
