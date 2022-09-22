@@ -75,7 +75,7 @@ const Header: NextPage<HeaderProps> = ({ userInfo }) => {
 };
 export default Header;
 
-const Wrap = styled.div`
+const Wrap = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
