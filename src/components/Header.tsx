@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-import { removeCookie } from '../util/cookies';
+import { removeCookie } from '../utilities/cookies';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCookie } from '../util/cookies';
+import { getCookie } from '../utilities/cookies';
+import { apiGetUserInfo } from '../lib/user/user';
 
 interface HeaderProps {
   userInfo: {
@@ -31,7 +32,7 @@ const Header: NextPage<HeaderProps> = ({ userInfo }) => {
     }
     setIsLoading(true);
     try {
-      const getUserInfo = await api(userId);
+      const getUserInfo = await apiGetUserInfo(userId);
       setId(getUserInfo.user.ID);
       setName(getUserInfo.user.NAME);
       setIsLoading(false);
