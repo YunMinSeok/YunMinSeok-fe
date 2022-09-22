@@ -62,12 +62,12 @@ const Header: NextPage<HeaderProps> = ({ userInfo }) => {
       </Link>
       {id.length === 0 || name.length === 0 ? (
         <Link href='/login'>
-          <p>login</p>
+          <Button>login</Button>
         </Link>
       ) : (
         <LinkWrap>
           <p>{name}</p>
-          <LogoutButton onClick={handleLogout}>logout</LogoutButton>
+          <Button onClick={handleLogout}>logout</Button>
         </LinkWrap>
       )}
     </Wrap>
@@ -89,8 +89,9 @@ const LinkWrap = styled.div`
 
 const Title = styled.a`
   font-size: 48px;
+  cursor: pointer;
 `;
 
-const LogoutButton = styled.p`
+const Button = styled.p`
   cursor: pointer;
 `;
