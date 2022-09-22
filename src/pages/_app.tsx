@@ -1,11 +1,13 @@
-import type { AppProps } from 'next/app';
+import type { AppProps, AppContext as NextAppContext } from 'next/app';
 import { Provider } from 'react-redux';
 import store from '../../modules/store';
 import styled from 'styled-components';
 
 import setupMSW from '../api/setup';
 import GlobalStyle from '../styles/GlobalStyle';
-
+import Layout from '../components/Layout';
+import cookies from 'next-cookies';
+import { apiGetUserInfo } from '../lib/user/user';
 setupMSW();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -14,11 +16,36 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <Background />
       <Content>
-        <Component {...pageProps} />
+        <Layout {...pageProps}>
+          <Component {...pageProps} />
+        </Layout>
       </Content>
     </Provider>
   );
 }
+
+MyApp.getInitialProps = async (context: NextAppContext) => {
+  const { ctx, Component } = context;
+  const { userId } = cookies(ctx);
+  const userInfo = { ID: null, NAME: null };
+
+  if (userId) {
+    const getUserInfo = await apiGetUserInfo(userId);
+    userInfo.ID = getUserInfo?.user.ID;
+    userInfo.NAME = getUserInfo?.user.NAME;
+  }
+
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  pageProps = { ...pageProps, userInfo };
+
+  return {
+    pageProps,
+  };
+};
 
 export default MyApp;
 
