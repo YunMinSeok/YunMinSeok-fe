@@ -106,7 +106,7 @@ const LoginPage: NextPage = () => {
 
 export default LoginPage;
 
-const Form = styled.div`
+const Form = styled.section`
   display: flex;
   flex-direction: column;
   margin-top: 40px;
