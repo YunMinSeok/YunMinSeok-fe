@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import type { NextPage } from 'next';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const LoginPage: NextPage = () => {
+  //아이디 , 비밀번호 state
+  const [idValue, setIdValue] = useState<string>('');
+  const [pwdValue, setPwdValue] = useState<string>('');
   return (
     <>
       <Header>
