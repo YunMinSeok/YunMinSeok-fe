@@ -1,3 +1,5 @@
+import Header from './Header';
+
 type Props = {
   children?: React.ReactNode;
   userInfo: {
@@ -9,6 +11,7 @@ type Props = {
 const Layout = ({ children, userInfo }: Props) => {
   return (
     <>
+      <Header userInfo={userInfo} />
       <main>{children}</main>
     </>
   );
