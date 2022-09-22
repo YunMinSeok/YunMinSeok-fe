@@ -6,20 +6,17 @@ import styled from 'styled-components';
 import { idValid, pwdValid } from '../utilities/valid';
 import { setUser } from '../../modules/slice/users';
 import { getCookie, setCookie } from '../utilities/cookies';
+import { toggleLoginButton } from '../utilities/loginButton';
+import { LoginInputType } from '../types/login';
 //api
 import { apiEmailLogin } from '../lib/user/user';
 import { useDispatch } from 'react-redux';
-
-interface inputType {
-  type: string;
-  value: boolean | null;
-}
 
 const LoginPage: NextPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [isError, setIsError] = useState<inputType[]>([
+  const [isError, setIsError] = useState<LoginInputType[]>([
     { type: 'id', value: null },
     { type: 'pwd', value: null },
   ]);
@@ -29,22 +26,6 @@ const LoginPage: NextPage = () => {
   const [pwdValue, setPwdValue] = useState<string>('');
   //로그인 버튼 state
   const [isLoginAble, setIsLoginAble] = useState<boolean>(false);
-  //로그인 버튼 토글 처리
-  const toggleLoginButton = (type: string, validResult: boolean) => {
-    //버튼
-    isError.filter((errorState) => {
-      if (errorState['type'] === type) {
-        errorState['value'] = !validResult;
-      }
-    });
-    //버튼 on/off 로직
-    const isButtonAble = isError.every((errorObj) => {
-      if (errorObj['value'] === false) {
-        return true;
-      }
-    });
-    setIsLoginAble(isButtonAble);
-  };
 
   //로그인 로직 && loading
   const [isLoginLoading, setIsLoginLoading] = useState<boolean>();
@@ -65,9 +46,9 @@ const LoginPage: NextPage = () => {
         setCookie('userId', loginResult.user.ID);
         router.push('/');
       }
-      setIsLoginLoading(false);
     } catch (e) {
       console.error(e);
+    } finally {
       setIsLoginLoading(false);
     }
   };
@@ -84,8 +65,11 @@ const LoginPage: NextPage = () => {
             value={idValue}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
               setIdValue(e.currentTarget.value);
-              const validResult = idValid(e.currentTarget.value);
-              toggleLoginButton('id', validResult);
+              if (e.currentTarget.value.length > 0) {
+                const validResult = idValid(e.currentTarget.value);
+                const isButton = toggleLoginButton('id', validResult, isError);
+                setIsLoginAble(isButton);
+              }
             }}
           />
           {isError[0]['value'] === true && (
@@ -101,8 +85,11 @@ const LoginPage: NextPage = () => {
             value={pwdValue}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
               setPwdValue(e.currentTarget.value);
-              const validResult = pwdValid(e.currentTarget.value);
-              toggleLoginButton('pwd', validResult);
+              if (e.currentTarget.value.length > 0) {
+                const validResult = pwdValid(e.currentTarget.value);
+                const isButton = toggleLoginButton('pwd', validResult, isError);
+                setIsLoginAble(isButton);
+              }
             }}
           />
           {isError[1]['value'] === true && (

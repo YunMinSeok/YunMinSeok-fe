@@ -47,6 +47,9 @@ const Header: NextPage<HeaderProps> = ({ userInfo }) => {
       const userId = getCookie('userId');
       if (userId) {
         const ignore = fetchGetUserInfo(userId);
+      } else {
+        setName('');
+        setId('');
       }
     } else {
       const { ID, NAME } = userInfo;
